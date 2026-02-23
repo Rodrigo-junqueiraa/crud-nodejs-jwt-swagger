@@ -1,59 +1,54 @@
 let tasks = [];
 let nextId = 1;
 
-function list() {
-  return tasks;
+function listByUser(userId) {
+  return tasks.filter((t) => t.userId === Number(userId));
 }
 
-module.exports = {
-  list,
-  create,
-};
-
-function create({ title }) {
+function create({ title, userId }) {
   const task = {
-    id: nextId,
-    title,
-    title,
+    id: nextId++,
+    userId: Number(userId),
+    title: title,
     done: false,
   };
 
-  nextId = nextId + 1;
   tasks.push(task);
   return task;
-
-  module.exports = {
-    list,
-    create,
-    findById,
-    update,
-    remove,
-  };
-
-  function findById(id) {
-    return tasks.find((t) => t.id === id);
-  }
-
-  function update(id, data) {
-    const task = findById(id);
-    if (!task) {
-      return null;
-    }
-
-    if (typeof data.title === "string") {
-      task.title = data.title;
-    }
-    if (typeof data.done === "boolean") {
-      task.done = data.done;
-    }
-    return task;
-  }
-  function remove(id) {
-    const index = tasks.findIndex((t) => t.id === id);
-    if (index === -1) {
-      return false;
-    }
-    tasks.splice(index, 1);
-    return true;
-  }
 }
+
+function findByIdForUser(id, userId) {
+  return tasks.find((t) => t.id === Number(id) && t.userId === Number(userId));
+}
+
+function updateForUser(id, userId, data) {
+  const task = findByIdForUser(id, userId);
+  if (!task) return null;
+
+  if (typeof data.title === "string" && data.title.trim().length > 0) {
+    task.title = data.title;
+  }
+  if (typeof data.done === "boolean") {
+    task.done = data.done;
+  }
+
+  return task;
+}
+
+function removeForUser(id, userId) {
+  const index = tasks.findIndex(
+    (t) => t.id === Number(id) && t.userId === Number(userId),
+  );
+  if (index === -1) return false;
+
+  tasks.splice(index, 1);
+  return true;
+}
+
+module.exports = {
+  listByUser,
+  create,
+  findByIdForUser,
+  updateForUser,
+  removeForUser,
+};
