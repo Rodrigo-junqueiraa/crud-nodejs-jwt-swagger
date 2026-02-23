@@ -27,15 +27,14 @@ Cada usuário autenticado possui acesso apenas às suas próprias tarefas.
 
 Node.js
 
+Javascript
+
 Express
 
 JWT (jsonwebtoken)
 
-Dotenv
-
 Swagger UI
 
-Nodemon
 
 ⚙️ Pré-requisitos
 
